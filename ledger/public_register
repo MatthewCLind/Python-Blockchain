@@ -1,0 +1,8 @@
+{
+    "accounts": [
+        {
+            "display-name": "Bob",
+            "public-key": "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAraeVXOBtfEER2+8MvWxO\nMCfjL0Qf1xegwbEQ4h4rotHQHe6idOgauDecbHWweqjffADfFIXClqvRgpnvJpPY\nmHmd/CYPVDUmA3VA22AHsVPlDNnRjYFxi0BhVxIocnMPXuMj5NlN9XC2lrTks4dA\n48/AjTiqpdEhf0LjZzhkzfA6+kcR3dccQVqJkChWumX1zZK+VkyqUuHHQZbIp+MS\niMxfpLpx8wUvmnEDl+f8r8YA4EbYiG3qhpxfYn+yffl92N8NlUP20NatdYyAy06A\n7mK0yE2QkulSYBxyPJ/NnJOJGf+WxzqicYzoFxe05rOUYNznwBTzKCpnPQmnkhs4\nfwIDAQAB\n-----END PUBLIC KEY-----"
+        }
+    ]
+}
