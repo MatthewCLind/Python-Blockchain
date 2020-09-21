@@ -1,11 +1,15 @@
 {
-	"transaction":
+	"post":
 	{
-		"payee-pk":"",
-		"amount":0.00
+		"transaction":
+		{
+			"payee":"",
+			"payee-pk":"",
+			"amount":0.00
+		},
+		"data":null
 	},
-	"data":null,
-	"poster-pk":"",
-	"hash":"",
+	"poster":""
+	"poster-pk":""
 	"signature":""
 }

@@ -3,6 +3,10 @@
         {
             "display-name": "Bob",
             "public-key": "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAraeVXOBtfEER2+8MvWxO\nMCfjL0Qf1xegwbEQ4h4rotHQHe6idOgauDecbHWweqjffADfFIXClqvRgpnvJpPY\nmHmd/CYPVDUmA3VA22AHsVPlDNnRjYFxi0BhVxIocnMPXuMj5NlN9XC2lrTks4dA\n48/AjTiqpdEhf0LjZzhkzfA6+kcR3dccQVqJkChWumX1zZK+VkyqUuHHQZbIp+MS\niMxfpLpx8wUvmnEDl+f8r8YA4EbYiG3qhpxfYn+yffl92N8NlUP20NatdYyAy06A\n7mK0yE2QkulSYBxyPJ/NnJOJGf+WxzqicYzoFxe05rOUYNznwBTzKCpnPQmnkhs4\nfwIDAQAB\n-----END PUBLIC KEY-----"
+        },
+        {
+            "display-name": "Alice",
+            "public-key": "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAjAOOhl6/zkkkU3s3L3pO\nCgpHuuWY/z7GqOvHUrKo5UdtoNy6RVRXc6uRYrIJoruK5+AB1jcLUPFnsd9qs1Vg\n04OP6NvjiE3zprFDDv8qfh7HmEmH6HrXUsCSzJFkkWh9f3YDerMMN2x3sXNt1bFP\ntfeA46L9iw8NbQkmJzXiHOx0qHJJmjONgE7XN1H6/c2INZENtwkH7G+SYnqYcG0A\nwCKpfZpcuak+gMPK/Vmwt7npCSVxbtMh17WOIQ4dC5uee4Y90jVQWwfe/+1CRb13\naOx2CkATap6FRqogYtmDZP95T8+vJAsdRWFOkDqwRMqMCuwJYC21lyji/xhz4GSk\nLQIDAQAB\n-----END PUBLIC KEY-----"
         }
     ]
 }
