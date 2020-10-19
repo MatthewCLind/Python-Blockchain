@@ -1,10 +1,10 @@
-import sys
-sys.path.append('../common')
-import wallet_functions
-import ledger_functions
 from Crypto.Signature import pkcs1_15
 from Crypto.Hash import SHA384
-import json
+from Crypto.PublicKey import RSA
+import pickle
+import sys
+sys.path.append('../ledger')
+from ledger import *
 
 
 def yn_ans(query):
@@ -14,9 +14,10 @@ def yn_ans(query):
     return yn
 
 
-wallet = wallet_functions.retrieve_wallet()
-pk, sk = wallet_functions.load_keys(wallet)
-
+disp_name = input('What is your display name?\n\t> ')
+wfile = 'wallets/' + disp_name + '.wallet'
+with open(wfile, 'rb') as f:
+    wallet = pickle.load(f)
 
 payee = ''
 amount = 0.0
@@ -34,26 +35,31 @@ if yn == 'y':
     data = input('What is the data you want to add?\n> ')
 
 
-payee_pk = ledger_functions.get_public_key_str(payee)
-transaction = {'payee':payee,'payee-pk':payee_pk,'amount':amount}
-post={'transaction':transaction,'data':data}
-post_bytes = json.dumps(post,indent=4).encode('utf-8')
+pub_reg = '../ledger/public_register'
+with open(pub_reg, 'rb') as f:
+    public_register = pickle.load(f)
+for acct in public_register['accounts']:
+    if payee in acct.values():
+        payee_pub = acct
+    elif disp_name in acct.values():
+        poster_pub = acct
+
+
+ssk = wallet['sk']
+sk = RSA.import_key(ssk)
+spk = wallet['pk']
+pk = RSA.import_key(spk)
+
+post_payload = generate_post_payload(poster_pub, payee_pub, amount, data)
+post_bytes = pickle.dumps(post_payload)
+
 signer = pkcs1_15.new(sk)
 hasher = SHA384.new()
 hasher.update(post_bytes)
-signature = signer.sign(hasher)#.decode('utf-8','ignore')
+signature = signer.sign(hasher)
 print(signature)
 print('type: ',type(signature))
-
-#signature = str(signature)
-signature = signature.decode('utf-8').replace("'",'"')
-print('string signature: ',type(signature))
-signature = signature.encode('utf-8')
-signature = bytes(signature)
-print(signature)
-print('bytes signature: ',type(signature))
-
-
-bs = signature
 val = pkcs1_15.new(pk)
-print(val.verify(hasher, bs))
+print(val.verify(hasher, signature))
+
+submit_post(post_payload, signature)
