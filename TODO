@@ -1,9 +1,4 @@
-Mining looks like it should work, test it
- - create some new post data
- - mine a new block
- - debug
-
-Then comment mining script
+comment mining script
 
 Next is to implement accounting
  - new file

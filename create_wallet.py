@@ -47,7 +47,7 @@ with open(outfile,'wb') as f:
 # the public register is a dictionary of public info
 # importantly, it contains a list of all public wallet info without their secret keys
 public_register_fn = 'public_register'
-public_registration = {'display-name':display_name, 'pk':key.publickey().export_key()}
+public_registration = {'display-name':display_name, 'pk':key.publickey().export_key(), 'balance':0.0}
 
 # here we load in the public register from its pickled file contents
 # must open in binary mode for pickle

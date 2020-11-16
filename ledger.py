@@ -211,6 +211,11 @@ def first_block():
     return _Block(bid, pbh, posts, mid, mpk)
 
 
+def get_blocks():
+    global ledger
+    return ledger['blocks']
+
+
 # load ledger data to ledger global
 ledger = retrieve_ledger()
 print(ledger)
