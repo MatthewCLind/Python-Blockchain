@@ -23,15 +23,15 @@ def is_hashed(hash_out, num_zeroes = REQUIRED_ZEROES):
     return leading_zeroes(hash_out) == num_zeroes
 
 
-def solve_block(block, max_attempts=1000000):
-    successful_hash = False
+def mine_block(new_block, max_attempts=10000000):
+    done = False
     attempts = 0
     biggest_chain = 0
     while not done:
         attempts += 1
         guess = str(rand(20))
-        block.update_work(guess)
-        block_bytes = pickle.dumps(block)
+        new_block.update_work(guess)
+        block_bytes = pickle.dumps(new_block)
         sha_obj = sha.new(data=block_bytes)
         guess_hash = sha_obj.hexdigest()
         solved = is_hashed(guess_hash)
@@ -46,7 +46,7 @@ def solve_block(block, max_attempts=1000000):
     print('leading zeroes: ', leading_zeroes(guess_hash))
     print('hash[0]: ',guess_hash[0] == '0')
     print('hash: ',guess_hash)
-    return block, solved
+    return new_block, solved
 
 
 # load in the miner's wallet
@@ -56,10 +56,11 @@ pk = user_wallet.get_pk()
 sk = user_wallet.get_sk()
 
 # generate the block for mining
-new_block = ledger.create_block()
+new_block = ledger.create_block(display_name, pk)
 
 # mine the block
 mined_block, success = mine_block(new_block)
 
 if success:
-    ledger_functions.add_block_to_chain(mined_block)
+    print('WE DID IT!')
+    ledger.add_block_to_chain(mined_block)

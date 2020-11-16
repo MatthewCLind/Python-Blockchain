@@ -55,12 +55,13 @@ with open(pub_reg, 'rb') as f:
     public_register = pickle.load(f)
 
 # search for, and load the public account of the payee
-if not payee == '':
-    for acct in public_register['accounts']:
-        if payee in acct.values():
-            payee_pub = acct
-        elif disp_name in acct.values():
-            poster_pub = acct
+payee_pub = ''
+poster_pub = ''
+for acct in public_register['accounts']:
+    if payee in acct.values():
+        payee_pub = acct
+    elif disp_name in acct.values():
+        poster_pub = acct
 
 
 # load in the secret and private keys for signing

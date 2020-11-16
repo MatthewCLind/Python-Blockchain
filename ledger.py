@@ -48,23 +48,24 @@ class _Work_Proof:
         self.work_proof = proof # signed hash of Block_Payload
 
 
-class _Block_Payload:
+class _Block:
     '''
     Class which represents a block on the chain.
     The miner will create this object and keep updating the work string until the SHA256 hash produces 5 leading zeroes
     A list of Blocks is the blockchain, which is maintained in the ledger file
     '''
 
-    def __init__(self, block_id, previous_block_hash, posts):
+    def __init__(self, block_id, previous_block_hash, posts, miner_id, miner_pk):
         # block IDs are simply the integers in order
         self.block_id = block_id
         # the previous block hash is included for verifying that this block payload is truly the next in sequence
         self.previous_block_hash = previous_block_hash
         self.posts = posts
-        self.work = ''
+        self.miner_id = miner_id
+        self.miner_pk = miner_pk
 
 
-    def update_work(work_str):
+    def update_work(self, work_str):
         self.work = work_str
 
 
@@ -169,23 +170,47 @@ def submit_post(post_payload, signature):
     add_post_to_pending_posts(new_post)
 
 
+
+def clear_pending_posts():
+    global ledger
+    ledger['pending-posts'] = []
+
+
 def add_block_to_chain(solved_block):
     # verify that the block is correct
 
     # delete old pending posts
     # note that this creates race conditions where new posts added after the miner began will be lost
     # to mitigate the race condition, later on a lock on the pending posts list can be implemented
+    clear_pending_posts()
 
     # append the block to the chain
+    ledger['blocks'].append(solved_block)
 
     # save the updated ledger
+    save_ledger()
 
 
-def create_block(block_payload, miner_id, miner_pk, proof):
-    work_proof = _Work_Proof(miner_id, miner_pk, proof)
-    new_block = _Block(block_payload, work_proof)
+def create_block(miner_id, miner_pk):
+    global ledger
+    block_id = get_current_block_id(ledger)
+    previous_block_hash = get_prev_block_hash()
+    posts = ledger['pending-posts']
+    pk_exp = miner_pk.export_key()
+    new_block = _Block(block_id, previous_block_hash, posts, miner_id, pk_exp)
     return new_block
+
+
+def first_block():
+    global ledger
+    bid = 0
+    pbh = b''
+    posts = []
+    mid = b''
+    mpk = b''
+    return _Block(bid, pbh, posts, mid, mpk)
 
 
 # load ledger data to ledger global
 ledger = retrieve_ledger()
+print(ledger)

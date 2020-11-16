@@ -5,9 +5,9 @@ import pickle
 
 
 class Wallet:
-'''
-Class to represent a wallet for convenience
-'''
+    '''
+    Class to represent a wallet for convenience
+    '''
 
     def __init__(self, display_name):
          wfile = 'wallets/' + display_name + '.wallet'
@@ -15,14 +15,14 @@ Class to represent a wallet for convenience
              self.wallet = pickle.load(f)
 
 
-    def _get_key(ps):
+    def _get_key(self, ps):
         txt = self.wallet[ps]
         return RSA.import_key(txt)
 
 
-    def get_sk():
-        return _get_key('sk')
+    def get_sk(self):
+        return self._get_key('sk')
 
 
-    def get_pk():
-        return _get_key('pk')
+    def get_pk(self):
+        return self._get_key('pk')
