@@ -8,6 +8,8 @@ from Crypto.Hash import SHA384
 from Crypto.Hash import SHA256
 # for loading / exporting public and secret keys
 from Crypto.PublicKey import RSA
+# has functions for calculating balances of accounts
+import accounting
 
 
 # variable used globally for accessing ledger data
@@ -63,10 +65,15 @@ class _Block:
         self.posts = posts
         self.miner_id = miner_id
         self.miner_pk = miner_pk
+        self.work = ''
 
 
     def update_work(self, work_str):
         self.work = work_str
+
+
+class InsufficientFunds(Exception):
+    'Error which occurs if someone is trying to pay but cannot afford it. I.E. the poor and destitute'
 
 
 def retrieve_ledger():
@@ -144,7 +151,11 @@ def create_block():
 def validate_post_payload(post_payload, signature):
     # make sure the signature works
     # make sure the payor has sufficient funds
-    pass
+    payer = post_payload.poster_public_register['display-name']
+    amount = post_payload.transaction['amount']
+    accounting.load_accounts(get_blocks())
+    if not accounting.available_balance(payer, amount, get_pending_posts()):
+        raise InsufficientFunds
 
 
 def submit_post(post_payload, signature):
@@ -168,7 +179,6 @@ def submit_post(post_payload, signature):
     new_post = _Post(post_payload, signature)
     # add the post to pending posts
     add_post_to_pending_posts(new_post)
-
 
 
 def clear_pending_posts():
@@ -218,4 +228,4 @@ def get_blocks():
 
 # load ledger data to ledger global
 ledger = retrieve_ledger()
-print(ledger)
+accounting.load_accounts(get_blocks())
