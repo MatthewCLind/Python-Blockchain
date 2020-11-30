@@ -1,3 +1,8 @@
+'''
+This module creates a .csv file for viewing account totals and the whole block chain
+'''
+
+
 import ledger
 import accounting
 
@@ -14,7 +19,7 @@ with open('report.csv','w') as f:
 
 
     f.write('\n\nLedger Blocks\n')
-    header = 'block ID,Miner ID, Miner PK,Previous Block Hash, Work\n'
+    header = 'block ID,Miner ID, Miner PK,Previous Block Hash, Work,Posts\n'
     f.write(header)
 
     blocks = ledger.ledger['blocks'][1:] #ignore the first block
@@ -31,7 +36,10 @@ with open('report.csv','w') as f:
         for post in block.posts:
             p = post.post_payload
             payer = p.poster_public_register['display-name']
-            payee = p.transaction['payee']['display-name']
+            try:
+                payee = p.transaction['payee']['display-name']
+            except TypeError:
+                payee=''
             amount = str(p.transaction['amount'])
             data = p.data
             post_str += '%s | %s | %s | %s,'%(payer, payee, amount, data)

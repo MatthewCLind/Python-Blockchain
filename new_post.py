@@ -17,6 +17,7 @@ import pickle
 import ledger
 # wallet objects just make accessing a wallet much easier
 from wallet import Wallet
+import sys
 
 
 # convenience function for getting yes/no input from user
@@ -35,10 +36,10 @@ payee = ''
 amount = 0.0
 data = None
 yn = ''
-yn = yn_ans('Would you like to pay someone? [ y / n ] ')
+yn_pay = yn_ans('Would you like to pay someone? [ y / n ] ')
 
 # if the user wants to pay, get the payee's account info, and amount
-if yn == 'y':
+if yn_pay == 'y':
     payee = input('What is the display name of the account you want to pay?\n> ')
     amount = input('How much?\n> ')
     amount = float(amount)
@@ -47,6 +48,9 @@ if yn == 'y':
 yn = yn_ans('Do you want to add some data? [ y / n ] ')
 if yn == 'y':
     data = input('What is the data you want to add?\n> ')
+elif yn_pay == 'n':
+    print('That is all there is to do, exiting')
+    sys.exit(1)
 
 
 # load the public registry

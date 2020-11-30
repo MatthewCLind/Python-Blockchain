@@ -228,4 +228,5 @@ def get_blocks():
 
 # load ledger data to ledger global
 ledger = retrieve_ledger()
+# set up the accounts for later verification of sufficient funds when posts are submitted
 accounting.load_accounts(get_blocks())

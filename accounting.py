@@ -4,6 +4,7 @@ Accounting simply crawls through the blocks and sums up mining fees and transact
 It assumes that all blocks are valid. Checking validity is the responsibility of ledger
 '''
 
+
 import pickle
 
 
@@ -24,15 +25,18 @@ def _update_act_balance(disp, amt):
 def available_balance(account, amount, pending_posts):
     global acts
     avail = -1.0
+    # get available balance from blocks
     for act in acts:
         if account in act.values():
             avail = act['balance']
+    # subtract pending transactions from available funds so you can't overdraft in a single block
     for post in pending_posts:
         p = post.post_payload
         payer = p.poster_public_register['display-name']
         if account == payer:
             avail -= p.transaction['amount']
-    if avail == -1.0:
+    # the only way avail can be None is if no account name was found
+    if avail is None:
         raise NonExistentAccountError
     return avail >= amount
 
@@ -55,7 +59,11 @@ def load_accounts(blocks):
 
         for post in block.posts:
             payload = post.post_payload
-            payee = payload.transaction['payee']['display-name']
+            try:
+                payee = payload.transaction['payee']['display-name']
+            # not all posts contain transactions, which is fine
+            except TypeError:
+                payee = ''
             if not payee == '':
                 pending_amt = payload.transaction['amount']
                 _update_act_balance(payee, pending_amt)

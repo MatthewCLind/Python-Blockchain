@@ -6,10 +6,14 @@ from timeit import timeit
 import pickle
 
 
+# mining is successful when this number of zeroes prepends the hash
 REQUIRED_ZEROES = 5
 
 
 def leading_zeroes(hash_out):
+    '''
+    Count the number of leading zeroes
+    '''
     leading_zeroes_cnt = 0
     for byte in hash_out:
         if byte == '0':
@@ -20,18 +24,30 @@ def leading_zeroes(hash_out):
 
 
 def is_hashed(hash_out, num_zeroes = REQUIRED_ZEROES):
+    '''
+    Check to see if the hash is successful or not
+    '''
     return leading_zeroes(hash_out) == num_zeroes
 
 
 def mine_block(new_block, max_attempts=10000000):
+    '''
+    continuously add random bytes to the block, then hash and look for a successful hash
+
+    max_attempts limits the total number of guesses
+    '''
     done = False
     attempts = 0
     biggest_chain = 0
     while not done:
         attempts += 1
+        # a guess is just a random string
         guess = str(rand(20))
+        # update_work() just stores the guess string, which ultimately changes how it is pickled
         new_block.update_work(guess)
+        # convert the block into bytes with pickle
         block_bytes = pickle.dumps(new_block)
+        # hash the pickled block
         sha_obj = sha.new(data=block_bytes)
         guess_hash = sha_obj.hexdigest()
         solved = is_hashed(guess_hash)
@@ -63,4 +79,5 @@ mined_block, success = mine_block(new_block)
 
 if success:
     print('WE DID IT!')
+    # sending a successful block to ledger to be saved
     ledger.add_block_to_chain(mined_block)
