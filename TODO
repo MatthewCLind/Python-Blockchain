@@ -1,8 +1,0 @@
-comment mining script
-
-Next is to implement accounting
- - new file
- - crawls through the ledger and updates the public registry with currency amounts
- - mining += 1 currency
- - accounting can tell you if you have sufficient funds [ sufficient_funds(payor, amount) ]
- - add function to wallet to update the balance
